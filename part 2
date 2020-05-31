@@ -1,0 +1,26 @@
+--part 2
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+ 
+ENTITY part2 IS
+PORT ( Clk, D : IN STD_LOGIC;
+		Q, Qz  : OUT STD_LOGIC);
+END part2;
+ 
+ARCHITECTURE Structural OF part2 IS
+ 
+SIGNAL R_g, S_g, Qa, Qb, S, R : STD_LOGIC ;
+ 
+BEGIN
+S<= NOT D;
+R<= D;
+R_g <= R AND Clk;
+S_g <= S AND Clk;
+Qa <= NOT (R_g OR Qb);
+Qb <= NOT (S_g OR Qa);
+ 
+Q <= Qa;
+Qz <= Qb;
+END Structural;
+
