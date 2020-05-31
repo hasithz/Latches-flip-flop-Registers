@@ -1,0 +1,26 @@
+--Part 3
+
+library ieee;
+use ieee.std_logic_1164.all;
+ 
+ENTITY part3 IS
+	PORT (D1, clock : IN STD_LOGIC;
+	Qout, Q_out : OUT STD_LOGIC);   
+END part3;
+ 
+ARCHITECTURE Behavior OF part3 IS 
+ 
+component part2
+	PORT ( D, Clk : IN STD_LOGIC;
+		Q, Qz  : OUT STD_LOGIC);
+END component;
+ 
+SIGNAL Qm: STD_LOGIC;
+ 
+BEGIN        
+	master : part2
+	port map(D=>D1, Clk=>not clock, Q=>Qm);
+	Q_out <= Qm;
+	slave : part2
+	port map( D=>Qm,Clk=> clock, Q=>Qout);--, Qz=>Q_out);
+END Behavior;
