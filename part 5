@@ -1,0 +1,70 @@
+--Part 5
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+ 
+ENTITY part5 IS
+PORT (InpA, inpB, InpC,InpD : IN STD_LOGIC_VECTOR(3 DOWNTO 0) ;
+	  D, cl : IN STD_LOGIC;
+	  HEX0,HEX1, HEX2, HEX3, HEX4, HEX5, HEX6, HEX7 : OUT STD_LOGIC_VECTOR(6 DOWNTO 0));
+END part5;
+ 
+ARCHITECTURE Behavior OF part5 IS
+
+component part51 is -- Decoder
+	PORT (A : IN STD_LOGIC_VECTOR(3 DOWNTO 0) ;
+	  SEG : OUT STD_LOGIC_VECTOR(6 DOWNTO 0));
+END component;
+component part52 IS -- save bits
+PORT (D1 : IN STD_LOGIC_VECTOR(3 DOWNTO 0) ;
+	 clock :  IN STD_LOGIC;
+	 Q1, Q2 : OUT STD_LOGIC_VECTOR(3 DOWNTO 0));
+END component;
+component part2 -- D latch
+	PORT ( Clk, D : IN STD_LOGIC;
+		Q, Qz  : OUT STD_LOGIC);
+END component;
+SIGNAL SEG3,SEG2,SEG1,SEG0,SEG7,SEG6,SEG5,SEG4 : STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL CC, CC1 : STD_LOGIC;
+BEGIN
+		clockinput : part2
+		port map(Clk => not cl , D=>D, Q=>CC1);
+		--CC1<= CC;
+		clockinput1 : part2
+		port map(Clk => cl , D=> CC1, Q=>CC);
+		--CC<= D;
+		input1 : part52 
+		port map (D1=> InpA, clock => CC, Q2=>SEG7);
+		output1 : part51
+		port map(A => SEG3, SEG=>HEX0);
+		outputNOT1 : part51
+		port map(A => SEG7, SEG=>HEX4);
+		input2 : part52 
+		port map (D1=> InpB, clock => CC, Q2=>SEG6);
+		output2 : part51
+		port map(A => SEG2, SEG=>HEX1);
+		outputNOT2 : part51
+		port map(A => SEG6, SEG=>HEX5);
+		input3 : part52 
+		port map (D1=> InpD, clock => CC, Q2=>SEG5);
+		output3 : part51
+		port map(A => SEG1, SEG=>HEX2);
+		outputNOT3 : part51
+		port map(A => SEG5, SEG=>HEX7);
+		input4 : part52 
+		port map (D1=> InpC, clock => CC, Q2=>SEG4);
+		output4 : part51
+		port map(A => SEG0, SEG=>HEX3);
+		outputNOT4 : part51
+		port map(A => SEG4, SEG=>HEX6);
+		input5 : part52 
+		port map (D1=> InpA, clock =>  CC, Q1=>SEG3);--, Q2=>SEG4);
+		input6 : part52 
+		port map (D1=> InpB, clock => CC, Q1=>SEG2);--, Q2=>SEG4);
+		input7 : part52 
+		port map (D1=> InpC, clock => CC, Q1=>SEG1);--, Q2=>SEG4);
+		input8 : part52 
+		port map (D1=> InpD, clock => CC, Q1=>SEG0);--, Q2=>SEG4);
+ 
+END Behavior ;
+
